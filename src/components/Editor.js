@@ -15,6 +15,7 @@ import save from "../assets/images/save_project.svg";
 import run from "../assets/images/run_project.svg";
 
 import Titlebar from "components/titlebar/Titlebar";
+import Workspace from "./workspace/Workspace";
 
 const { ipcRenderer } = window.require("electron");
 const path = window.require("path");
@@ -202,8 +203,8 @@ const Editor = ({ history }) => {
                 <main className={styles.editorMain}>
                     {activeProject ? (
                         <div>
-                            <h2>{activeProject.name}</h2>
-                            <pre>{JSON.stringify(activeProject, null, 2)}</pre>
+                            <Workspace />
+                            {/*<pre>{JSON.stringify(activeProject, null, 2)}</pre>*/}
                         </div>
                     ) : (
                         <h2
