@@ -1,16 +1,15 @@
 import {
-  CloseButton,
-  ContractButton,
-  MaximizeButton,
-  MinimizeButton
-} from 'components/titlebar/TitlebarButtons';
-import React, { useState } from 'react';
+    CloseButton,
+    ContractButton,
+    MaximizeButton,
+    MinimizeButton,
+} from "components/titlebar/TitlebarButtons";
+import React, { useState } from "react";
 
-import { app } from 'utils/services';
+import { app } from "utils/services";
 
-import favicon from 'components/titlebar/img/favicon.png';
-import styles from 'components/titlebar/scss/Titlebar.module.scss';
-
+import favicon from "components/titlebar/img/favicon.ico";
+import styles from "components/titlebar/scss/Titlebar.module.scss";
 
 /**
  * @namespace Titlebar
@@ -20,32 +19,31 @@ import styles from 'components/titlebar/scss/Titlebar.module.scss';
  */
 
 const Titlebar = () => {
+    const [maximized, setMaximized] = useState(false);
 
-  const [ maximized, setMaximized ] = useState(false);
+    const handleMaximizeToggle = () => {
+        !maximized ? app.maximize() : app.unmaximize();
+        setMaximized(!maximized);
+    };
 
-  const handleMaximizeToggle = () => {
-    !maximized ? app.maximize() : app.unmaximize();
-    setMaximized(!maximized);
-  };
+    return (
+        <section className={styles.titlebar}>
+            <div>
+                <img src={favicon} alt="favicon" />
+                <span id="electron-window-title-text">РудиронБИК</span>
+            </div>
 
-  return (
-    <section className={ styles.titlebar }>
-      <div>
-        <img src={ favicon } alt="favicon" />
-        <span id="electron-window-title-text">{ document.title }</span>
-      </div>
-
-      <div id="electron-window-title-buttons">
-        <MinimizeButton onClick={ app.minimize } />
-        {
-          maximized
-            ? <ContractButton onClick={ handleMaximizeToggle } />
-            : <MaximizeButton onClick={ handleMaximizeToggle } />
-        }
-        <CloseButton onClick={ app.quit } />
-      </div>
-    </section>
-  );
+            <div id="electron-window-title-buttons">
+                <MinimizeButton onClick={app.minimize} />
+                {maximized ? (
+                    <ContractButton onClick={handleMaximizeToggle} />
+                ) : (
+                    <MaximizeButton onClick={handleMaximizeToggle} />
+                )}
+                <CloseButton onClick={app.quit} />
+            </div>
+        </section>
+    );
 };
 
 export default Titlebar;

@@ -1,4 +1,4 @@
-.app {
+.home {
     background-color: #1a1a1a;
 
     width: 100%;
@@ -37,6 +37,8 @@ header {
     gap: 0px;
     justify-content: space-between;
     align-items: center;
+
+    cursor: pointer;
 }
 
 .mainMenuSetting_ImageContainer {

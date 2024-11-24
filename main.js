@@ -3,7 +3,8 @@ const { spawn } = require("child_process");
 const path = require("path");
 
 // Electron modules
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, screen, dialog } = require("electron");
+const fs = require("fs");
 
 // Extra modules
 const getPort = require("get-port");
@@ -51,6 +52,7 @@ const createMainWindow = (port) => {
      * If in developer mode, show a loading window while
      * the app and developer server compile.
      */
+
     if (isDevMode) {
         mainWindow.loadURL("http://localhost:3000");
         mainWindow.hide();
@@ -193,15 +195,63 @@ app.whenReady().then(async () => {
      * Assigns the main browser window on the
      * browserWindows object.
      */
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
     browserWindows.mainWindow = new BrowserWindow({
-        frame: false,
-        fullscreen: true,
+        width: width,
+        height: height,
+        frame: false, // Убирает рамку окна, если нужно
+        title: "РудиронБИК",
+        icon: path.join(__dirname, "favicon.ico"),
         webPreferences: {
             contextIsolation: false,
             enableRemoteModule: true,
             nodeIntegration: true,
             preload: path.join(app.getAppPath(), "preload.js"),
         },
+    });
+
+    ipcMain.handle("open-file-dialog", async () => {
+        const { canceled, filePaths } = await dialog.showOpenDialog({
+            properties: ["openFile"],
+            filters: [
+                { name: "RDRN Files", extensions: ["rdrn"] },
+                { name: "All Files", extensions: ["*"] },
+            ],
+        });
+
+        if (!canceled && filePaths.length > 0) {
+            const filePath = filePaths[0];
+            const fileData = fs.readFileSync(filePath, "utf-8");
+            return { path: filePath, fileData: fileData }; // Возвращаем путь и содержимое файла
+        }
+
+        return null; // Если пользователь закрыл диалог
+    });
+
+    ipcMain.handle("save-new-project", async (event, content) => {
+        const options = {
+            title: "Сохранить новый проект",
+            defaultPath: "new_project.rdrn",
+            filters: [
+                { name: "RDRN Files", extensions: ["rdrn"] },
+                { name: "All Files", extensions: ["*"] },
+            ],
+        };
+
+        const savePath = await dialog.showSaveDialog(options);
+        if (!savePath.canceled && savePath.filePath) {
+            try {
+                fs.writeFileSync(
+                    savePath.filePath,
+                    JSON.stringify(content, null, 4)
+                );
+                return { success: true, path: savePath.filePath };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+        return { success: false, error: "Canceled" };
     });
 
     /**

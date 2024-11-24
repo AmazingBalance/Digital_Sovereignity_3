@@ -1,0 +1,86 @@
+.editor {
+    background-color: #1a1a1a;
+
+    width: 100%;
+    height: 100vh;
+}
+
+.editorHeader {
+    width: 100%;
+    height: 130px;
+    padding-top: 32px;
+
+    position: static;
+
+    background-color: #161616;
+    border-bottom: 4px solid #565455;
+
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-left: 30px;
+}
+
+.editorHeaderGroup {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    margin-right: 100px;
+}
+
+.openedProjects {
+    display: flex;
+    flex-wrap: nowrap;
+    min-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.openedProjectsItem {
+    padding: 10px;
+    background-color: white;
+    border-right: 3px solid #565455;
+    cursor: pointer;
+}
+
+.openedProjectsItem:hover {
+    background-color: #d4d4d4;
+}
+
+.openedProjectsItem.active {
+    background-color: #c2c2c2;
+    font-weight: bold;
+}
+
+.fileName {
+    margin-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.closeButton {
+    font-size: 24px;
+    height: 0;
+    color: #ff4d4d;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.editorHeaderItem_ImageContainer {
+    width: 50px;
+    height: 50px;
+
+    display: flex;
+    align-items: flex-end;
+
+    cursor: pointer;
+}
+
+.editorHeaderItem_Image {
+    width: 100%;
+    height: 100%;
+}
