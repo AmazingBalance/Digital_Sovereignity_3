@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+}
+
+.image-container {
+    position: relative;
+    width: 528px;
+    height: 426.4px;
+    margin-left: 30px;
+}
+
+#image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.text-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+
+    padding-right: 30px;
+}
+
+.text {
+    /*top: 30px;
+    right: 20px;*/
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    width: 100%;
+}
+
+.arrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.line {
+    transition: all 0.1s ease;
+}
+
+/* Стиль для выделения области */
+.area-highlight {
+    position: absolute;
+    border: 2px solid red;
+    background-color: rgba(255, 0, 0, 0.3);
+    pointer-events: none;
+}
