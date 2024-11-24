@@ -29,9 +29,13 @@ if "app.py" in sys.argv[0]:
 # Remove and replace with your own
 @app.route("/example")
 def example():
-
-  # See /src/components/App.js for frontend call
   return jsonify("Example response from Flask! Learn more in /app.py & /src/components/App.js")
+
+@app.route("/api/process", methods=["POST"])
+def process_list():
+    data = request.data.decode("utf-8")  # Получаем plain text и декодируем в строку
+    print(data)  # Логируем текст
+    return jsonify({"length": len(data)})
 
 
 """
