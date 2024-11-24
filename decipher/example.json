@@ -1,0 +1,74 @@
+{
+    "glovar": [
+        {"blockId": "nv", "var_name": "glow1", "val": {"type":"int", "val":0}},
+        {"blockId": "nv", "var_name": "sp_data", "val": {"type":"byte", "val":0}},
+        {"blockId": "nv", "var_name": "brightness2", "val":{"type":"int", "val":150}}
+    ],
+    "setup": [
+        {"blockId": "L1", "type": 0, "val": {"type":"int", "val":1}},
+        {"blockId": "L2", "type": 1, "val": "brightness2"},
+        {"blockId": "B1"},
+
+        {"blockId":"SPI", "extr":{"type":"int", "val":115200}},
+        {"blockId":"SPL", "val":{"type":"str", "val":"Рудирон бутерброт!"}},
+        {"blockId":"SPT", "val":{"type":"str", "val":"No new line!"}},
+
+        {"blockId": "if", "condition": {
+            "blockId":"=", "par1":"glow1", "par2":{"type":"int", "val":0}
+        }, "body": [
+            {"blockId": "d", "ms": 100},
+            {"blockId": "nv", "var_name": "a", "val": {
+                "blockId": "+", "par1": "glow1", "par2": {"type":"int", "val":0}
+            }}
+        ]}
+    ],
+    "loop": [
+        {"blockId":"if", "condition":{
+            "blockId":">", "par1":{"blockId":"SPA"}, "par2":{"type":"int", "val":0}
+        }, "body":[
+                {"blockId":"cv", "var_name":"sp_data", "val":{"blockId":"SPR"}},
+                {"blockId":"if", "condition":{
+                    "blockId":"=", "par1":"sp_data", "par2":{"type":"char", "val":"1"}
+                }, "body":[
+                        {"blockId":"SPT", "val":{"type":"str", "val":"Получил: "}},
+                        {"blockId":"SPL", "val":{"type":"int", "val":"sp_data"}, "type":"DEC"}
+                ]},
+                {"blockId":"el", "body":[
+                    {"blockId":"SPL", "val":{"type":"str", "val":"Не тоо значение!"}}
+                ]}
+        ]},
+
+        {"blockId": "fl", "steps": {"type":"int", "val":50}, "body": [
+            {"blockId":"dw", "to":"L1", "val":{"type":"int","val":1}},
+            {"blockId":"d", "ms":{"type":"int","val":50}},
+
+            {"blockId":"dw", "to":"L1", "val":{"type":"int","val":0}},
+            {"blockId":"d", "ms":{"type":"int","val":50}}
+        ]},
+        {"blockId":"nv", "var_name":"btn_state", "val": {"blockId":"dr", "from":"B1"}},
+        {"blockId":"aw", "to":"L2", "val": {
+            "blockId":"*", "par1":"btn_state", "par2":"brightness2"
+        }},
+        {"blockId":"cv", "var_name":"brightness2", "val":{
+            "blockId":"-", "par1":"brightness2", "par2":{"type":"int", "val":10}
+        }},
+        {"blockId":"if", "condition": {
+            "blockId":"<", "par1":"brightness2", "par2":{"type":"int", "val":30}
+        }, "body":[
+            {"blockId":"cv", "var_name":"brightness2", "val":{"type":"int", "val":250}}
+        ]},
+        {"blockId":"d", "ms":"brightness2"},
+        {"blockId":"d", "ms":{
+            "blockId":"+", "par1":"brightness2", "par2":{
+                "blockId":"-", "par1":{"type":"int", "val":260}, "par2":"brightness2"
+            }
+        }},
+        {"blockId":"wl", "condition":{
+            "blockId":">", "par1":"brightness2", "par2":{"type":"int", "val":200}
+        }, "body": [
+            {"blockId":"cv", "var_name":"brightness2", "val":{
+                "blockId":"-", "par1":"brightness2", "par2":{"type":"int", "val":10}
+            }}
+        ]}
+    ]
+}
